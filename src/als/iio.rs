@@ -37,9 +37,15 @@ impl Als {
                 smol::fs::read_to_string(entry.path().join("name")).map(|name| (name, entry))
             })
             .filter_map(|(name, entry)| async {
-                ["als", "acpi-als", "apds9960", "cros-ec-light", "aop-sensors-als"]
-                    .contains(&name.unwrap_or_default().trim())
-                    .then_some(entry)
+                [
+                    "als",
+                    "acpi-als",
+                    "apds9960",
+                    "cros-ec-light",
+                    "aop-sensors-als",
+                ]
+                .contains(&name.unwrap_or_default().trim())
+                .then_some(entry)
             })
             .filter_map(|entry| async move {
                 // TODO should probably start from the `parse_illuminance_input` in the next major version
