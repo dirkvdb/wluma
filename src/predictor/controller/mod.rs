@@ -4,7 +4,7 @@ use itertools::Itertools;
 pub mod adaptive;
 pub mod manual;
 
-const INITIAL_TIMEOUT_SECS: u64 = 5;
+const INITIAL_TIMEOUT_SECS: u64 = 15;
 const PENDING_COOLDOWN_RESET: u8 = 15;
 const NEXT_ALS_COOLDOWN_RESET: u8 = 15;
 
