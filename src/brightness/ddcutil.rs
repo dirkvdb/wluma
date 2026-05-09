@@ -127,14 +127,16 @@ impl DdcUtil {
     }
 
     fn get_locked(&mut self) -> Result<u64> {
-        match &mut self.backend {
+        let value = match &mut self.backend {
             Backend::Direct(display) => get_brightness_with_retry(display.get_mut()),
             Backend::Cli { bus } => {
                 let (current, max_brightness) = cli_get_brightness(*bus)?;
                 self.max_brightness = max_brightness;
                 Ok(current)
             }
-        }
+        }?;
+
+        Ok(value.clamp(self.min_brightness, self.max_brightness))
     }
 
     fn set_locked(&mut self, value: u64) -> Result<u64> {

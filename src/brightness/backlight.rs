@@ -110,7 +110,7 @@ impl Backlight {
     pub async fn get(&mut self) -> Result<u64> {
         async fn update(this: &mut Backlight) -> Result<u64> {
             let value = read(&mut this.file).await? as u64;
-            this.current = Some(value);
+            this.current = Some(value.clamp(this.min_brightness, this.max_brightness));
             Ok(value)
         }
 
