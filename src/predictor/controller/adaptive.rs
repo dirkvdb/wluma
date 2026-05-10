@@ -109,6 +109,15 @@ impl Controller {
             .expect("user_rx closed unexpectedly")
             .or(initial_brightness);
 
+        if user_changed_brightness == Some(0) {
+            // Ignore brightness changes to 0, as they are likely caused by turning off the screen
+            log::debug!(
+                "[{}] Ignoring brightness change to 0, likely caused by turning off the screen",
+                self.output_name
+            );
+            return;
+        }
+
         if let Some(brightness) = user_changed_brightness {
             self.pending = match &self.pending {
                 // First time we notice user adjusting brightness, freeze lux and luma...
